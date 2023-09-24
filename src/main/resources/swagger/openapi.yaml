@@ -5,24 +5,37 @@ info:
 servers:
   - url: https://jsonplaceholder.swagger.io/api/v3
 tags:
-  - name: user
+  - name: jsonplaceholder
     description: Operations about user
   - name: todos
     description: Operations about todos
 paths:
-  /saveAllUser:
+  /users:
     get:
       tags:
-        - user
-      summary: Save all user from the jsonplaceholder api
-      operationId: createUser
+        - jsonplaceholder
+      summary: Save all users from the jsonplaceholder api
+      operationId: retrieveUsers
       responses:
-        default:
+        201:
           description: successful operation
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /todo:
+    get:
+      tags:
+        - jsonplaceholder
+      summary: Save all todos from the jsonplaceholder api
+      operationId: retrieveTodos
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
 components:
   schemas:
     User:
@@ -90,17 +103,15 @@ components:
         bs:
           type: string
           example: e-enable strategic applications
-    Todos:
+    Todo:
       type: object
       properties:
-        userId:
-          type: integer
-          format: int64
-          example: 1
         id:
           type: integer
           format: int64
           example: 1
+        userDto:
+          $ref: '#/components/schemas/User'
         title:
           type: string
           example: delectus aut autem

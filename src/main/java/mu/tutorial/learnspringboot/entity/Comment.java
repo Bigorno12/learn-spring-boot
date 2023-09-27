@@ -32,4 +32,7 @@ public class Comment {
 
     @Column(name = "body", nullable = false, length = 500)
     private String body;
+
+    @Column(name = "name", nullable = false, length = 500)
+    private String name;
 }

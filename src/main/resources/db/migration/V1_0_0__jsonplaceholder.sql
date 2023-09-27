@@ -42,6 +42,7 @@ create table comments
     post_id bigint       not null,
     email   varchar(100) not null,
     body    varchar(500) not null,
+    name    varchar(500) not null,
     primary key (id),
     foreign key (post_id) references post (id)
 ) engine=InnoDB;

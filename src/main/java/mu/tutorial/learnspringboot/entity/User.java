@@ -18,7 +18,7 @@ import mu.tutorial.learnspringboot.emmbeded.Company;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "_user")
 public class User {
 
     @Id

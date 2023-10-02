@@ -17,6 +17,11 @@ public class JsonPlaceHolderController {
         this.jsonPlaceHolderService = jsonPlaceHolderService;
     }
 
+    @GetMapping("/comments")
+    public void saveAllComments() {
+        jsonPlaceHolderService.saveAllComments();
+    }
+
     @GetMapping("/posts")
     public void saveAllPosts() {
         jsonPlaceHolderService.saveAllPosts();

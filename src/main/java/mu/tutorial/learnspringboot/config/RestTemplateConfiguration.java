@@ -20,6 +20,7 @@ public class RestTemplateConfiguration {
     public RestTemplate restTemplate() {
         return restTemplateBuilder
                 .rootUri("https://jsonplaceholder.typicode.com/")
+                .defaultHeader("Content-Type", "application/json")
                 .build();
     }
 }

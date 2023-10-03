@@ -1,6 +1,6 @@
 package mu.tutorial.learnspringboot.service;
 
-import mu.tutorial.learnspringboot.dto.UserDto;
+import mu.tutorial.learnspringboot.model.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package mu.tutorial.learnspringboot.restcontroller;
 
-import mu.tutorial.learnspringboot.dto.UserDto;
+import mu.tutorial.learnspringboot.model.UserDto;
 import mu.tutorial.learnspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public Page<UserDto> retrieveAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size",defaultValue = "5") Integer size) {
+    public Page<UserDto> retrieveAllUsers(@RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "size", defaultValue = "5") Integer size) {
         return userService.retrieveUsers(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id")));
     }
 

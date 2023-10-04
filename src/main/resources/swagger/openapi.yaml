@@ -10,7 +10,7 @@ tags:
   - name: todos
     description: Operations about todos
 paths:
-  /users:
+  /jsonplaceholder/users:
     get:
       tags:
         - jsonplaceholder
@@ -23,7 +23,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /todos:
+  /jsonplaceholder/todos:
     get:
       tags:
         - jsonplaceholder
@@ -36,7 +36,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Todo'
-  /posts:
+  /jsonplaceholder/posts:
     get:
       tags:
         - jsonplaceholder
@@ -49,7 +49,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-  /comments:
+  /jsonplaceholder/comments:
     get:
       tags:
         - jsonplaceholder

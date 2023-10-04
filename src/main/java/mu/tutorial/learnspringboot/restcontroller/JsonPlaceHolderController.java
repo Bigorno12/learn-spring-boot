@@ -1,14 +1,19 @@
 package mu.tutorial.learnspringboot.restcontroller;
 
+import mu.tutorial.learnspringboot.api.JsonplaceholderApi;
+import mu.tutorial.learnspringboot.model.CommentDto;
+import mu.tutorial.learnspringboot.model.PostDto;
+import mu.tutorial.learnspringboot.model.TodoDto;
+import mu.tutorial.learnspringboot.model.UserDto;
 import mu.tutorial.learnspringboot.service.JsonPlaceHolderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/jsonplaceholder")
-public class JsonPlaceHolderController {
+@RequestMapping("api/v1")
+public class JsonPlaceHolderController implements JsonplaceholderApi {
 
     private final JsonPlaceHolderService jsonPlaceHolderService;
 
@@ -17,23 +22,27 @@ public class JsonPlaceHolderController {
         this.jsonPlaceHolderService = jsonPlaceHolderService;
     }
 
-    @GetMapping("/comments")
-    public void saveAllComments() {
+    @Override
+    public ResponseEntity<CommentDto> retrieveComments() {
         jsonPlaceHolderService.saveAllComments();
+        return JsonplaceholderApi.super.retrieveComments();
     }
 
-    @GetMapping("/posts")
-    public void saveAllPosts() {
+    @Override
+    public ResponseEntity<PostDto> retrievePosts() {
         jsonPlaceHolderService.saveAllPosts();
+        return JsonplaceholderApi.super.retrievePosts();
     }
 
-    @GetMapping("/todos")
-    public void saveAllTodos() {
+    @Override
+    public ResponseEntity<TodoDto> retrieveTodos() {
         jsonPlaceHolderService.saveAllTodos();
+        return JsonplaceholderApi.super.retrieveTodos();
     }
 
-    @GetMapping("/users")
-    public void saveAllUsers() {
+    @Override
+    public ResponseEntity<UserDto> retrieveUsers() {
         jsonPlaceHolderService.saveAllUsers();
+        return JsonplaceholderApi.super.retrieveUsers();
     }
 }

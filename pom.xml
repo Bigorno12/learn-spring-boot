@@ -121,6 +121,38 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${org.openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>1</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/openapi.yaml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>mu.tutorial.learnspringboot.api</apiPackage>
+                            <generateApis>true</generateApis>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <modelPackage>mu.tutorial.learnspringboot.model</modelPackage>
+                            <modelNameSuffix>Dto</modelNameSuffix>
+                            <generateModels>true</generateModels>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <useJakartaEe>true</useJakartaEe>
+                                <interfaceOnly>true</interfaceOnly>
+                                <openApiNullable>false</openApiNullable>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- mapstruct -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -161,39 +193,6 @@
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${org.openapi-generator-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>1</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/swagger/openapi.yaml</inputSpec>
-                            <generatorName>spring</generatorName>
-                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                            <apiPackage>mu.tutorial.learnspringboot.api</apiPackage>
-                            <generateApis>true</generateApis>
-                            <generateApiTests>false</generateApiTests>
-                            <generateApiDocumentation>false</generateApiDocumentation>
-                            <modelPackage>mu.tutorial.learnspringboot.model</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <generateModels>true</generateModels>
-                            <generateModelTests>false</generateModelTests>
-                            <generateModelDocumentation>false</generateModelDocumentation>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <useJakartaEe>true</useJakartaEe>
-                                <interfaceOnly>true</interfaceOnly>
-                                <openApiNullable>false</openApiNullable>
-                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>

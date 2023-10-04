@@ -19,7 +19,7 @@ spring:
     driverClassName: org.h2.Driver
     password:
   flyway:
-    user: root
-    password: root
+    user: sa
+    password:
     url: jdbc:h2:mem:jsonplaceholder
     enabled: false

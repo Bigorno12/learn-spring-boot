@@ -1,10 +1,10 @@
 package mu.tutorial.learnspringboot.service;
 
 import lombok.extern.slf4j.Slf4j;
-import mu.tutorial.learnspringboot.dto.UserDto;
 import mu.tutorial.learnspringboot.entity.User;
 import mu.tutorial.learnspringboot.exception.UserException;
 import mu.tutorial.learnspringboot.mapper.UserMapper;
+import mu.tutorial.learnspringboot.model.UserDto;
 import mu.tutorial.learnspringboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -11,12 +11,12 @@ public class BusinessCodeUnNamePatternMatching {
     public static int populationUnNamePatternMatching(Populated populated) {
         // Preview feature
         return switch (populated) {
-            case City(_, int population) -> population;
-            case Department(String name, City[] cities) -> {
+            case City(var x , int population) -> population;
+            case Department(String name, List<City> cities) -> {
                 System.out.println("Name: " + name);
                 // Cannot use return because of ambiguity
                 // Existing the switch not the method
-                yield Arrays.stream(cities)
+                yield cities.stream()
                         .mapToInt(BusinessCodeUnNamePatternMatching::populationUnNamePatternMatching)
                         .sum();
             }
@@ -31,7 +31,7 @@ public class BusinessCodeUnNamePatternMatching {
 
     public static void main(String[] args) {
         var paris = new City("Paris", 2_000_000);
-        var seine = new Department("La Seine", paris);
+        var seine = new Department("La Seine", List.of(paris));
         var london = new City("London", 8_000_000);
         List<Populated> populateds = List.of(seine, london, paris);
 

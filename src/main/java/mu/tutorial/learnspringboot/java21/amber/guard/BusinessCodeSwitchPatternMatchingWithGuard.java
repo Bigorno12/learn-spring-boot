@@ -1,4 +1,4 @@
-package mu.tutorial.learnspringboot.java21.amber.switchpatternmatching;
+package mu.tutorial.learnspringboot.java21.amber.guard;
 
 import mu.tutorial.learnspringboot.java21.amber.City;
 import mu.tutorial.learnspringboot.java21.amber.Department;
@@ -6,21 +6,19 @@ import mu.tutorial.learnspringboot.java21.amber.Populated;
 
 import java.util.List;
 
-public class BusinessCodeSwitchPatternMatching {
-    public static int populationSwitchPatternMatching(Populated populated) {
-        // Switch Expression Pattern Matching with Sealed Class
-        // Check Exhaustiveness
-        // Can Now have a null case
+public class BusinessCodeSwitchPatternMatchingWithGuard {
+    public static int populationSwitchPatternMatchingWithGuard(Populated populated) {
+        // Guard
         return switch (populated) {
+            case City city when city.population() > 0 -> city.population();
             case City city -> city.population();
             case Department department -> 0;
-            case null -> throw new NullPointerException("dkmkldf");
         };
     }
 
     public static int sum(List<Populated> populateds) {
         return populateds.stream()
-                .mapToInt(BusinessCodeSwitchPatternMatching::populationSwitchPatternMatching)
+                .mapToInt(BusinessCodeSwitchPatternMatchingWithGuard::populationSwitchPatternMatchingWithGuard)
                 .sum();
     }
 

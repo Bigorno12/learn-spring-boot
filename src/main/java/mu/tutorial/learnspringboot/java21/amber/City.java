@@ -1,4 +1,4 @@
-package mu.tutorial.learnspringboot.amber;
+package mu.tutorial.learnspringboot.java21.amber;
 
 import java.util.Objects;
 

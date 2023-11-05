@@ -60,3 +60,12 @@
     }
 
 ```
+## Keycloak
+- https://medium.com/@max.mayr/keycloak-and-spring-boot-security-b069306b0fb0
+- https://dev.to/ulrich/step-up-authentication-in-keycloak-spring-boot-3g1m
+- https://www.baeldung.com/spring-boot-keycloak-integration-testing
+- https://github.com/Ruthwik/Spring-boot-keycloak/blob/master/keycloak/docker-compose.yml
+- https://www.baeldung.com/spring-boot-keycloak
+- https://www.heyvaldemar.com/install-keycloak-using-docker-compose/
+- https://medium.com/@ozbillwang/run-keycloak-locally-with-docker-compose-db9a9f2fb437
+- https://github.com/keycloak/keycloak-containers/tree/main/docker-compose-examples

@@ -156,6 +156,39 @@
                             </configOptions>
                         </configuration>
                     </execution>
+                    <!-- WebClient Openapi -->
+                    <execution>
+                        <id>2</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger/openapi.yaml</inputSpec>
+                            <!-- Webclient generator config -->
+                            <generatorName>java</generatorName>
+                            <library>resttemplate</library>
+                            <!-- API -->
+                            <apiPackage>mu.tutorial.learnspringboot.webclient.api</apiPackage>
+                            <generateApis>true</generateApis>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <!-- Model -->
+                            <modelPackage>mu.tutorial.learnspringboot.webclient.model</modelPackage>
+                            <generateModels>true</generateModels>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <java8>true</java8>
+                                <!-- Do not include any validation with the client -->
+                                <useBeanValidation>false</useBeanValidation>
+                                <useJakartaEe>true</useJakartaEe>
+                                <interfaceOnly>true</interfaceOnly>
+                                <openApiNullable>false</openApiNullable>
+                                <useOptional>false</useOptional>
+                            </configOptions>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <!-- mapstruct -->

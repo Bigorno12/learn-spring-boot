@@ -69,3 +69,7 @@
 - https://www.heyvaldemar.com/install-keycloak-using-docker-compose/
 - https://medium.com/@ozbillwang/run-keycloak-locally-with-docker-compose-db9a9f2fb437
 - https://github.com/keycloak/keycloak-containers/tree/main/docker-compose-examples
+
+## Openapi
+- https://openapi-generator.tech/docs/generators/java
+- https://blog.palo-it.com/en/spring-boot-client-and-server-code-generation-using-openapi-3-specs

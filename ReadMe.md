@@ -73,3 +73,4 @@
 ## Openapi
 - https://openapi-generator.tech/docs/generators/java
 - https://blog.palo-it.com/en/spring-boot-client-and-server-code-generation-using-openapi-3-specs
+- https://github.com/OpenAPITools/openapi-generator/blob/master/samples/client/petstore/java/webclient/pom.xml

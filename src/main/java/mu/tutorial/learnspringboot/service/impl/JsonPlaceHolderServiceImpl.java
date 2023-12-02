@@ -19,6 +19,7 @@ import mu.tutorial.learnspringboot.service.JsonPlaceHolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +79,7 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
         ResponseEntity<TodoJsonPlaceHolder[]> todoJsonPlaceHolderEntity = restClient.get()
                 .uri("/todos")
                 .retrieve()
+                .onStatus(HttpStatusCode::is2xxSuccessful, (request, response) -> response.getBody())
                 .toEntity(TodoJsonPlaceHolder[].class);
 
         List<TodoJsonPlaceHolder> todoJsonPlaceHolders = Optional.ofNullable(todoJsonPlaceHolderEntity.getBody())

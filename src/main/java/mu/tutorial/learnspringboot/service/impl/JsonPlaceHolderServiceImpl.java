@@ -1,7 +1,8 @@
 package mu.tutorial.learnspringboot.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import mu.tutorial.learnspringboot.config.RestTemplateConfiguration;
 import mu.tutorial.learnspringboot.entity.Comment;
 import mu.tutorial.learnspringboot.entity.Post;
 import mu.tutorial.learnspringboot.entity.Todo;
@@ -16,9 +17,12 @@ import mu.tutorial.learnspringboot.repository.TodosRepository;
 import mu.tutorial.learnspringboot.repository.UserRepository;
 import mu.tutorial.learnspringboot.service.JsonPlaceHolderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,36 +33,52 @@ import java.util.Optional;
 @Transactional
 public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
 
-    private final RestTemplateConfiguration restTemplateConfiguration;
+    private final RestClient restClient;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final TodosRepository todosRepository;
     private final CommentRepository commentRepository;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public JsonPlaceHolderServiceImpl(RestTemplateConfiguration restTemplateConfiguration, UserRepository userRepository, PostRepository postRepository, TodosRepository todosRepository, CommentRepository commentRepository) {
-        this.restTemplateConfiguration = restTemplateConfiguration;
+    public JsonPlaceHolderServiceImpl(@Qualifier("restClient") RestClient restClient,
+                                      UserRepository userRepository,
+                                      PostRepository postRepository,
+                                      TodosRepository todosRepository,
+                                      CommentRepository commentRepository, ObjectMapper objectMapper) {
+        this.restClient = restClient;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.todosRepository = todosRepository;
         this.commentRepository = commentRepository;
+        this.objectMapper = objectMapper;
     }
+
     @Override
     public void saveAllUsers() {
-        ResponseEntity<User[]> userEntity = restTemplateConfiguration.restTemplate()
-                .getForEntity("/users", User[].class);
 
-        List<User> users = Optional.ofNullable(userEntity.getBody())
-                .map(Arrays::asList)
-                .orElseThrow(() -> new JsonPlaceHolderException("Failed to get users from jsonplaceholder.typicode.com"));
+        List<User> users = restClient.get()
+                .uri("/users")
+                .exchange((request, response) -> {
+                    switch (response.getStatusCode()) {
+                        case HttpStatus.OK -> {
+                            return objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+                        }
+                        case HttpStatus.NO_CONTENT, HttpStatus.NOT_FOUND ->
+                                throw new JsonPlaceHolderException("Failed to get users from jsonplaceholder.typicode.com");
+                        default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
+                    }
+                });
 
         userRepository.saveAll(users);
     }
 
     @Override
     public void saveAllTodos() {
-        ResponseEntity<TodoJsonPlaceHolder[]> todoJsonPlaceHolderEntity = restTemplateConfiguration.restTemplate()
-                .getForEntity("/todos", TodoJsonPlaceHolder[].class);
+        ResponseEntity<TodoJsonPlaceHolder[]> todoJsonPlaceHolderEntity = restClient.get()
+                .uri("/todos")
+                .retrieve()
+                .toEntity(TodoJsonPlaceHolder[].class);
 
         List<TodoJsonPlaceHolder> todoJsonPlaceHolders = Optional.ofNullable(todoJsonPlaceHolderEntity.getBody())
                 .map(Arrays::asList)
@@ -73,8 +93,10 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
 
     @Override
     public void saveAllPosts() {
-        ResponseEntity<PostJsonPlaceHolder[]> postJsonPlaceHolderEntity = restTemplateConfiguration.restTemplate()
-                .getForEntity("/posts", PostJsonPlaceHolder[].class);
+        ResponseEntity<PostJsonPlaceHolder[]> postJsonPlaceHolderEntity = restClient.get()
+                .uri("/posts")
+                .retrieve()
+                .toEntity(PostJsonPlaceHolder[].class);
 
         List<PostJsonPlaceHolder> postJsonPlaceHolders = Optional.ofNullable(postJsonPlaceHolderEntity.getBody())
                 .map(Arrays::asList)
@@ -89,8 +111,11 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
 
     @Override
     public void saveAllComments() {
-        ResponseEntity<CommentJsonPlaceHolder[]> commentJsonPlaceHolderEntity = restTemplateConfiguration.restTemplate()
-                .getForEntity("/comments", CommentJsonPlaceHolder[].class);
+
+        ResponseEntity<CommentJsonPlaceHolder[]> commentJsonPlaceHolderEntity = restClient.get()
+                .uri("/comments")
+                .retrieve()
+                .toEntity(CommentJsonPlaceHolder[].class);
 
         List<CommentJsonPlaceHolder> commentJsonPlaceHolders = Optional.ofNullable(commentJsonPlaceHolderEntity.getBody())
                 .map(Arrays::asList)

@@ -60,16 +60,12 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
 
         List<User> users = restClient.get()
                 .uri("/users")
-                .exchange((request, response) -> {
-                    switch (response.getStatusCode()) {
-                        case HttpStatus.OK -> {
-                            return objectMapper.readValue(response.getBody(), new TypeReference<>() {});
-                        }
-                        case HttpStatus.NO_CONTENT, HttpStatus.NOT_FOUND ->
-                                throw new JsonPlaceHolderException("Failed to get users from jsonplaceholder.typicode.com");
+                .exchange((request, response) -> switch (response.getStatusCode()) {
+                        case HttpStatus.OK -> objectMapper.readValue(response.getBody(), new TypeReference<>() {});
+                        case HttpStatus.NO_CONTENT, HttpStatus.NOT_FOUND -> throw new JsonPlaceHolderException("Failed to get users from jsonplaceholder.typicode.com");
                         default -> throw new IllegalStateException("Unexpected value: " + response.getStatusCode());
                     }
-                });
+                );
 
         userRepository.saveAll(users);
     }

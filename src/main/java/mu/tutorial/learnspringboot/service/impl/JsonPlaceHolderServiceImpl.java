@@ -28,6 +28,10 @@ import org.springframework.web.client.RestClient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -91,20 +95,29 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
 
     @Override
     public void saveAllPosts() {
-        ResponseEntity<PostJsonPlaceHolder[]> postJsonPlaceHolderEntity = restClient.get()
-                .uri("/posts")
-                .retrieve()
-                .toEntity(PostJsonPlaceHolder[].class);
 
-        List<PostJsonPlaceHolder> postJsonPlaceHolders = Optional.ofNullable(postJsonPlaceHolderEntity.getBody())
-                .map(Arrays::asList)
-                .orElseThrow(() -> new JsonPlaceHolderException("Failed to get posts from jsonplaceholder.typicode.com"));
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            List<Future<PostJsonPlaceHolder>> futurePosts = IntStream.rangeClosed(1, 100)
+                    .mapToObj(index -> executor.submit(() -> restClient.get()
+                            .uri("/posts/" + index)
+                            .retrieve()
+                            .body(PostJsonPlaceHolder.class)))
+                    .toList();
 
-        List<Post> posts = postJsonPlaceHolders.stream()
-                .map(this::mapPostJsonPlaceHolderToEntity)
-                .toList();
+            List<Post> posts = futurePosts.stream()
+                    .map(futurePost -> {
+                        try {
+                            return futurePost.get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new JsonPlaceHolderException("Failed to get posts from jsonplaceholder.typicode.com");
+                        }
+                    })
+                    .map(this::mapPostJsonPlaceHolderToEntity)
+                    .toList();
 
-        postRepository.saveAll(posts);
+            postRepository.saveAll(posts);
+
+        }
     }
 
     @Override

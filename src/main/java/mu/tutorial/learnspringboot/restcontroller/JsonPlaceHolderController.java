@@ -1,10 +1,6 @@
 package mu.tutorial.learnspringboot.restcontroller;
 
 import mu.tutorial.learnspringboot.api.JsonplaceholderApi;
-import mu.tutorial.learnspringboot.model.CommentDto;
-import mu.tutorial.learnspringboot.model.PostDto;
-import mu.tutorial.learnspringboot.model.TodoDto;
-import mu.tutorial.learnspringboot.model.UserDto;
 import mu.tutorial.learnspringboot.service.JsonPlaceHolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,26 +19,26 @@ public class JsonPlaceHolderController implements JsonplaceholderApi {
     }
 
     @Override
-    public ResponseEntity<CommentDto> retrieveComments() {
+    public ResponseEntity<Void> retrieveComments() {
         jsonPlaceHolderService.saveAllComments();
-        return JsonplaceholderApi.super.retrieveComments();
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<PostDto> retrievePosts() {
+    public ResponseEntity<Void> retrievePosts() {
         jsonPlaceHolderService.saveAllPosts();
-        return JsonplaceholderApi.super.retrievePosts();
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<TodoDto> retrieveTodos() {
+    public ResponseEntity<Void> retrieveTodos() {
         jsonPlaceHolderService.saveAllTodos();
-        return JsonplaceholderApi.super.retrieveTodos();
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<UserDto> retrieveUsers() {
+    public ResponseEntity<Void> retrieveUsers() {
         jsonPlaceHolderService.saveAllUsers();
-        return JsonplaceholderApi.super.retrieveUsers();
+        return ResponseEntity.ok().build();
     }
 }

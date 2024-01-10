@@ -28,6 +28,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -123,21 +124,18 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
     @Override
     public void saveAllComments() {
 
-        ResponseEntity<CommentJsonPlaceHolder[]> commentJsonPlaceHolderEntity = restClient.get()
-                .uri("/comments")
-                .retrieve()
-                .toEntity(CommentJsonPlaceHolder[].class);
-
-        List<CommentJsonPlaceHolder> commentJsonPlaceHolders = Optional.ofNullable(commentJsonPlaceHolderEntity.getBody())
-                .map(Arrays::asList)
-                .orElseThrow(() -> new JsonPlaceHolderException("Failed to get comments from jsonplaceholder.typicode.com"));
-
-        List<Comment> comments = commentJsonPlaceHolders.stream()
-                .map(this::mapCommentJsonPlaceHolderToEntity)
+        List<CompletableFuture<Comment>> futureComments = IntStream.rangeClosed(1, 500)
+                .mapToObj(index -> CompletableFuture.supplyAsync(() -> restClient.get()
+                        .uri("/comments/" + index)
+                        .retrieve()
+                        .body(CommentJsonPlaceHolder.class)).thenApply(this::mapCommentJsonPlaceHolderToEntity))
                 .toList();
 
-        commentRepository.saveAll(comments);
+        List<Comment> comments = futureComments.stream()
+                .map(CompletableFuture::join)
+                .filter(comment -> comment.getName() != null).toList();
 
+        commentRepository.saveAll(comments);
     }
 
     private Todo mapTodosJsonPlaceHolderToEntity(TodoJsonPlaceHolder todoJsonPlaceHolder) {

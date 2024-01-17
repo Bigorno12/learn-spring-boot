@@ -128,7 +128,11 @@ public class JsonPlaceHolderServiceImpl implements JsonPlaceHolderService {
                 .mapToObj(index -> CompletableFuture.supplyAsync(() -> restClient.get()
                         .uri("/comments/" + index)
                         .retrieve()
-                        .body(CommentJsonPlaceHolder.class)).thenApply(this::mapCommentJsonPlaceHolderToEntity))
+                        .body(CommentJsonPlaceHolder.class))
+                        .thenApply(this::mapCommentJsonPlaceHolderToEntity)
+                        .exceptionally(throwable -> {
+                            throw new JsonPlaceHolderException("Failed to get comments from jsonplaceholder.typicode.com");
+                        }))
                 .toList();
 
         List<Comment> comments = futureComments.stream()

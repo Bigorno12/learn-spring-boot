@@ -1,4 +1,4 @@
-package mu.tutorial.learnspringboot.service;
+package mu.tutorial.learnspringboot.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import mu.tutorial.learnspringboot.entity.User;
@@ -6,6 +6,7 @@ import mu.tutorial.learnspringboot.exception.UserException;
 import mu.tutorial.learnspringboot.mapper.UserMapper;
 import mu.tutorial.learnspringboot.model.UserDto;
 import mu.tutorial.learnspringboot.repository.UserRepository;
+import mu.tutorial.learnspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +51,6 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> retrieveUsersByName(String name) {
         return userRepository.findAllUsersByEqualIgnoreCase(name)
                 .stream()
-                .map(userMapper::mapToDto)
                 .toList();
     }
 
